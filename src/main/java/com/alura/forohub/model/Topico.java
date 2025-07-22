@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table(name = "medicos")
-@Entity(name = "Medico")
+@Table(name = "topico")
+@Entity(name = "Topico")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +23,7 @@ public class Topico {
 
     private String titulo;
     private String mensaje;
+
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
@@ -32,7 +33,15 @@ public class Topico {
     private String autor;
     private String curso;
 
+    public Topico(String titulo, String mensaje, String autor, String curso) {
+        this.titulo = titulo;
+        this.mensaje = mensaje;
+        this.autor = autor;
+        this.curso = curso;
+        this.fechaCreacion = LocalDateTime.now();
+        this.status = StatusTopico.NO_RESPONDIDO;
 
 
+    }
 
 }
