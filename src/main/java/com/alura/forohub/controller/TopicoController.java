@@ -28,14 +28,7 @@ public class TopicoController {
         repository.save(topico);
 
         URI uri = uriBuilder.path("/topico/{id}").buildAndExpand(topico.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DatosRespuestaTopico(
-                topico.getId(),
-                topico.getTitulo(),
-                topico.getMensaje(),
-                topico.getFechaCreacion(),
-                topico.getStatus(),
-                topico.getAutor(),
-                topico.getCurso()
-        ));
+        return ResponseEntity.created(uri).body(new DatosRespuestaTopico (topico));
+
     }
 }
