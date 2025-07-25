@@ -1,5 +1,6 @@
 package com.alura.forohub.model;
 
+import com.alura.forohub.dto.DatosRegistroTopico;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table(name = "topicos")
+@Table(name = "topico")
 @Entity(name = "Topico")
 @Getter
 @NoArgsConstructor
@@ -33,15 +34,16 @@ public class Topico {
     private String autor;
     private String curso;
 
-    public Topico(String titulo, String mensaje, String autor, String curso) {
-        this.titulo = titulo;
-        this.mensaje = mensaje;
-        this.autor = autor;
-        this.curso = curso;
+    public Topico(DatosRegistroTopico datos) {
+        this.titulo = datos.titulo();
+        this.mensaje = datos.mensaje();
+        this.autor = datos.autor();
+        this.curso = datos.curso();
         this.fechaCreacion = LocalDateTime.now();
         this.status = StatusTopico.NO_RESPONDIDO;
 
 
     }
+
 
 }
