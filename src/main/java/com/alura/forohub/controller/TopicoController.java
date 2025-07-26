@@ -23,8 +23,11 @@ import java.util.List;
 
 public class TopicoController {
 
-    @Autowired
-    private TopicoService service;
+    private final TopicoService service;
+
+    public TopicoController(TopicoService service) {
+        this.service = service;
+    }
 
     @Autowired
     private TopicoRepository repository;
@@ -50,12 +53,9 @@ public class TopicoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaTopico> consultarTopicoPorId(@PathVariable Long id) {
-        Topico topico = repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado"));
-
-        return ResponseEntity.ok(new DatosRespuestaTopico(topico));
+        var dto = service.consultarTopicoPorId(id);
+        return ResponseEntity.ok(dto);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {

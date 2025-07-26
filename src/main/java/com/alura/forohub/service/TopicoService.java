@@ -20,6 +20,10 @@ public class TopicoService {
     @Autowired
     private TopicoRepository repository;
 
+    public TopicoService(TopicoRepository repository) {
+        this.repository = repository;
+    }
+
     public DatosRespuestaTopico registrar(DatosRegistroTopico datos) {
         Topico topico = new Topico(datos);
         repository.save(topico);
@@ -40,12 +44,16 @@ public class TopicoService {
         Topico topico = repository.findById(datos.id())
                 .orElseThrow(() -> new EntityNotFoundException("ID de tópico no encontrado"));
 
-        topico.actualizarDatos(datos); // 👈 Se usa tu método aquí
+        topico.actualizarDatos(datos);
 
         return new DatosRespuestaTopico(topico);
     }
 
-
+    public DatosRespuestaTopico consultarTopicoPorId(Long id) {
+        Topico topico = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Topico no encontrado con id: " + id));
+        return new DatosRespuestaTopico(topico);
+    }
 
 
     public void eliminar(Long id) {
