@@ -1,6 +1,7 @@
 package com.alura.forohub.infra.security;
 
 import com.alura.forohub.repository.UsuarioRepository;
+import com.alura.forohub.service.AutenticacionService;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,8 +20,13 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
+    private final AutenticacionService autenticacionService;
+
+    public SecurityFilter(TokenService tokenService, AutenticacionService autenticacionService) {
+        this.tokenService = tokenService;
+        this.autenticacionService = autenticacionService;
+    }
 
     @Autowired
     private UsuarioRepository usuarioRepository;

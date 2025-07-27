@@ -1,5 +1,6 @@
 package com.alura.forohub.infra.security;
 
+import com.alura.forohub.service.AutenticacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +17,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-    @Autowired
-    private SecurityFilter securityFilter;
+    private final TokenService tokenService;
+    private final AutenticacionService autenticacionService;
+
+    public SecurityConfigurations(TokenService tokenService, AutenticacionService autenticacionService) {
+        this.tokenService = tokenService;
+        this.autenticacionService = autenticacionService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -27,7 +33,7 @@ public class SecurityConfigurations {
                         .requestMatchers("/login").permitAll() // Permite login sin token
                         .anyRequest().authenticated() // Cualquier otra ruta requiere autenticación
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // << Aquí se registra
+                .addFilterBefore(new SecurityFilter(tokenService, autenticacionService), UsernamePasswordAuthenticationFilter.class) // << Aquí se registra
                 .build();
     }
 
