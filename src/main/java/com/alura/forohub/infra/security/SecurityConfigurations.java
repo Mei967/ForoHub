@@ -30,10 +30,11 @@ public class SecurityConfigurations {
         return http
                 .csrf(csrf -> csrf.disable()) // Desactiva CSRF (útil para APIs REST)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll() // Permite login sin token
+                        .requestMatchers("/login", "/usuarios").permitAll() // Permite login sin token
                         .anyRequest().authenticated() // Cualquier otra ruta requiere autenticación
                 )
-                .addFilterBefore(new SecurityFilter(tokenService, autenticacionService), UsernamePasswordAuthenticationFilter.class) // << Aquí se registra
+                .addFilterBefore(new SecurityFilter(tokenService, autenticacionService),
+                        UsernamePasswordAuthenticationFilter.class) // << Aquí se registra
                 .build();
     }
 

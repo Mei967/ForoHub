@@ -1,13 +1,11 @@
 package com.alura.forohub.infra.security;
 
-import com.alura.forohub.repository.UsuarioRepository;
 import com.alura.forohub.service.AutenticacionService;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -28,9 +26,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         this.autenticacionService = autenticacionService;
     }
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -41,9 +36,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (tokenJWT != null) {
             try {
                 String loginUsuario = tokenService.getSubject(tokenJWT);
-                Usuario usuario = usuarioRepository.findByLogin(loginUsuario).orElseThrow();
+                Usuario usuario = (Usuario) autenticacionService.loadUserByUsername(loginUsuario);
 
-                // Crea la autenticación manualmente
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 usuario, null, usuario.getAuthorities());
@@ -53,7 +47,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (JWTVerificationException ex) {
-                // Si el token es inválido, no autenticamos al usuario
                 System.out.println("Token inválido: " + ex.getMessage());
             }
         }
@@ -69,4 +62,3 @@ public class SecurityFilter extends OncePerRequestFilter {
         return null;
     }
 }
-

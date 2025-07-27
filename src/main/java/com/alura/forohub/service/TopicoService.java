@@ -7,6 +7,7 @@ import com.alura.forohub.dto.DatosRespuestaTopico;
 import com.alura.forohub.model.Topico;
 import com.alura.forohub.repository.TopicoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -24,6 +25,7 @@ public class TopicoService {
         this.repository = repository;
     }
 
+    @Transactional
     public DatosRespuestaTopico registrar(DatosRegistroTopico datos) {
         Topico topico = new Topico(datos);
         repository.save(topico);
@@ -39,7 +41,7 @@ public class TopicoService {
                 .map(DatosRespuestaTopico::new)
                 .toList();
     }
-
+    @Transactional
     public DatosRespuestaTopico actualizar(DatosActualizarTopico datos) {
         Topico topico = repository.findById(datos.id())
                 .orElseThrow(() -> new EntityNotFoundException("ID de tópico no encontrado"));
@@ -55,7 +57,7 @@ public class TopicoService {
         return new DatosRespuestaTopico(topico);
     }
 
-
+    @Transactional
     public void eliminar(Long id) {
         Topico topico = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("El tópico con ID " + id + " no existe."));
