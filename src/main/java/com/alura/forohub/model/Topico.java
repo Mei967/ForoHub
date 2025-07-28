@@ -35,6 +35,9 @@ public class Topico {
     private String autor;
     private String curso;
 
+    @Column(columnDefinition = "TINYINT")
+    private Boolean activo;
+
     public Topico(DatosRegistroTopico datos) {
         this.titulo = datos.titulo();
         this.mensaje = datos.mensaje();
@@ -42,10 +45,9 @@ public class Topico {
         this.curso = datos.curso();
         this.fechaCreacion = LocalDateTime.now();
         this.status = StatusTopico.NO_RESPONDIDO;
-
+        this.activo = true;
 
     }
-
 
     public void actualizarDatos(DatosActualizarTopico datos) {
 
@@ -55,5 +57,12 @@ public class Topico {
         if (datos.mensaje() != null) {
             this.mensaje = datos.mensaje();
         }
+    }
+    public void desactivar() {
+        this.activo = false;
+    }
+
+    public boolean isActivo() {
+        return this.activo;
     }
 }

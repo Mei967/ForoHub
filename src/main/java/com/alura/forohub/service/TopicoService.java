@@ -37,13 +37,14 @@ public class TopicoService {
     }
 
     public List<DatosRespuestaTopico> listar() {
-        return repository.findAll().stream()
+        return repository.findByActivoTrue().stream()
                 .map(DatosRespuestaTopico::new)
                 .toList();
     }
     @Transactional
     public DatosRespuestaTopico actualizar(DatosActualizarTopico datos) {
         Topico topico = repository.findById(datos.id())
+                .filter(Topico::isActivo)
                 .orElseThrow(() -> new EntityNotFoundException("ID de tópico no encontrado"));
 
         topico.actualizarDatos(datos);
@@ -53,6 +54,7 @@ public class TopicoService {
 
     public DatosRespuestaTopico consultarTopicoPorId(Long id) {
         Topico topico = repository.findById(id)
+                .filter(Topico::isActivo)
                 .orElseThrow(() -> new EntityNotFoundException("Topico no encontrado con id: " + id));
         return new DatosRespuestaTopico(topico);
     }
@@ -61,6 +63,6 @@ public class TopicoService {
     public void eliminar(Long id) {
         Topico topico = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("El tópico con ID " + id + " no existe."));
-        repository.delete(topico);
+        topico.desactivar();
     }
 }
