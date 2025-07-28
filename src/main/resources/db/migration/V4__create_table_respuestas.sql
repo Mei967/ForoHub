@@ -1,0 +1,2 @@
+-- Tabla respuestas ya creada manualmente
+-- Esta migración no requiere acciones
