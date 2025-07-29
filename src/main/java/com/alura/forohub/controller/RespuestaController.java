@@ -3,6 +3,7 @@ package com.alura.forohub.controller;
 import com.alura.forohub.dto.DatosRegistroRespuesta;
 import com.alura.forohub.dto.DatosRespuestaRespuesta;
 import com.alura.forohub.service.RespuestaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/respuestas")
+@SecurityRequirement(name = "bearer-key")
 public class RespuestaController {
 
     @Autowired

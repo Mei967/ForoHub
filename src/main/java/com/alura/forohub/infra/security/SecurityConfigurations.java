@@ -31,6 +31,7 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable()) // Desactiva CSRF (útil para APIs REST)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/usuarios").permitAll() // Permite login sin token
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll() // Habilitar Swagger
                         .anyRequest().authenticated() // Cualquier otra ruta requiere autenticación
                 )
                 .addFilterBefore(new SecurityFilter(tokenService, autenticacionService),
